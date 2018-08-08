@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.naver.toqur54.service.MemberDao">
+ 	<select id="login" parameterType="String" resultMap="memberMap">
+ 		select * from member where email=#{email}
+ 	</select>
+ 	
+ 	<select id="selectConfirm" parameterType="String" resultType="int">
+   		select count(*) from member where email=#{email}
+	</select>
+	
+	<insert id="insertRow" parameterType="hashMap">
+		insert into member(email,name,password,phone1,phone2,phone3,
+		postno,addr1,addr2,inputdate,photo
+		) values(
+		#{email,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{phone1,jdbcType=VARCHAR},
+		#{phone2,jdbcType=VARCHAR},
+		#{phone3,jdbcType=VARCHAR},
+		#{postno,jdbcType=VARCHAR},
+		#{addr1,jdbcType=VARCHAR},
+		#{addr2,jdbcType=VARCHAR},
+		#{inputdate,jdbcType=VARCHAR},
+		#{photo,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!--resultMap 여러값일때, resultMap을 구현해야함 -->  
+  	<select id="selectAll" resultMap="memberMap">
+  		select * from member
+  	</select>
+  	
+ <!--property = Member.java값, column = DB칼럼명,  id = select resuluMap id-->
+  	<resultMap type="com.naver.toqur54.entities.Member" id="memberMap">
+ 	</resultMap>
+  	
+  	<select id="selectOne" parameterType="String" resultMap="memberMap">
+  		select * from member where email=#{email}
+  	</select>
+  	
+  	<update id="updateRow" parameterType="hashMap">
+  		update member set 
+  		name=#{name,jdbcType=VARCHAR},password=#{password,jdbcType=VARCHAR},
+  		phone1=#{phone1,jdbcType=VARCHAR},phone2=#{phone2,jdbcType=VARCHAR},
+  		phone3=#{phone3,jdbcType=VARCHAR},postno=#{postno,jdbcType=VARCHAR},
+  		addr1=#{addr1,jdbcType=VARCHAR},addr2=#{addr2,jdbcType=VARCHAR},
+		inputdate=#{inputdate,jdbcType=VARCHAR},photo=#{photo,jdbcType=VARCHAR}
+		where email=#{email}
+  	</update>
+  	
+  	<delete id="deleteRow" parameterType="String">
+  		delete from member where email=#{email}
+  	</delete>
+  	
+  	<!-- 임시비번 -->
+  	<update id="updatePassword" parameterType="hashMap">
+  		update member set password=#{password,jdbcType=VARCHAR}
+  		where email=#{email}
+  	</update>
+  	
+ </mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.naver.toqur54.service.BuyDao">
+ 	<select id="selectSequenceNo" parameterType="hashMap" resultType="Integer" >
+		select ifnull(max(no)+1,1) from buy 
+		where vendcode=#{vendcode} and yyyy=#{yyyy} 
+		and mm=#{mm} and dd=#{dd}
+  	</select>
+  	
+  	<resultMap type="com.naver.toqur54.entities.Buy" id="BuyMap">
+ 	</resultMap>
+ 	
+ 	<insert id="insertRow">
+ 		insert into buy(seq,vendcode,	yyyy,mm,dd,no,hang,procode,price,qty,memo
+ 		)values(
+ 		(select ifnull(MAX(seq)+1,1) from buy alias_buy),
+ 		#{vendcode,jdbcType=VARCHAR},
+ 		#{yyyy,jdbcType=VARCHAR},
+ 		#{mm,jdbcType=VARCHAR},
+ 		#{dd,jdbcType=VARCHAR},
+ 		#{no,jdbcType=INTEGER},
+ 		#{hang,jdbcType=INTEGER},
+ 		#{procode,jdbcType=VARCHAR},
+ 		#{price,jdbcType=INTEGER},
+ 		#{qty,jdbcType=INTEGER},
+ 		#{memo,jdbcType=VARCHAR}
+ 		)
+ 	</insert>
+ 	
+ 	<select id="selectBuySearchRollup" parameterType="hashMap" resultMap="BuyMap">
+ 		select seq,vendcode,yyyy,mm,dd,no,hang,price,
+ 		B.name vendname, procode, C.name proname, sum(qty) qty,
+ 		sum(price * qty) total,memo
+ 		from buy A, vender B, product C
+ 		where vendcode=#{vendcode} and yyyy=#{yyyy} and mm=#{mm}
+ 		and dd=#{dd} and A.vendcode=B.code and A.procode=C.code
+ 		group by no,hang WITH ROLLUP
+ 	</select>
+  	
+  	<select id="selectBuySearchRollupMM" parameterType="hashMap" resultMap="BuyMap">
+ 		select seq,vendcode,yyyy,mm,dd,no,hang,price,
+ 		B.name vendname, procode, C.name proname, sum(qty) qty,
+ 		sum(price * qty) total,memo
+ 		from buy A, vender B, product C
+ 		where vendcode=#{vendcode} and yyyy=#{yyyy} and mm=#{mm}
+ 		and A.vendcode=B.code and A.procode=C.code
+ 		group by mm,dd,no,hang WITH ROLLUP
+ 	</select>
+ 	
+ 	<select id="selectRow" parameterType="Integer" resultMap="BuyMap">
+ 		select A.*,stock from buy A, product B 
+ 		where seq=#{seq} and procode = code 
+ 	</select>
+ 	
+ 	<update id="updateRow" parameterType="hashMap">
+ 		update buy set
+ 		procode=#{procode},price=#{price},qty=#{qty},memo=#{memo}
+ 		where seq=#{seq}
+ 	</update>
+ 	
+ 	<delete id="deleteRow" parameterType="hashMap">
+ 		delete from buy where seq=#{seq}
+ 	</delete>
+ 	
+ 	
+ 	
+ </mapper>

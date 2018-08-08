@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.naver.toqur54.service.SalaryDao">
+ 	<select id="selectConfirm" parameterType="String" resultType="int">
+   		select count(*) from salary where empno=#{empno}
+	</select>
+	
+	<insert id="insertRow" parameterType="hashMap">
+		insert into salary(empno,dept,name,input_date,birth_date,parter,dependent20,dependent60,
+		desabled,womanpower,pay,extra,yn) values(
+		#{empno,jdbcType=VARCHAR},
+		#{dept,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{input_date,jdbcType=VARCHAR},
+		#{birth_date,jdbcType=VARCHAR},
+		#{parter,jdbcType=INTEGER},
+		#{dependent20,jdbcType=INTEGER},
+		#{dependent60,jdbcType=INTEGER},
+		#{desabled,jdbcType=INTEGER},
+		#{womanpower,jdbcType=INTEGER},
+		#{pay,jdbcType=INTEGER},
+		#{extra,jdbcType=INTEGER},
+		#{yn,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!--dept2 -->  
+  	<select id="selectDept" resultMap="Dept2Map">
+  		select * from dept2
+  	</select>
+  	
+  	<resultMap type="com.naver.toqur54.entities.Dept2" id="Dept2Map">
+ 	</resultMap>
+ 	<!-- end dept2 -->
+ 	
+ 	
+ 	<!-- 사원 전체 검색 -->
+ 	<select id="selectAll" resultMap="SalaryMap">
+  		select * from salary
+  	</select>
+ 	
+  	<resultMap type="com.naver.toqur54.entities.Salary" id="SalaryMap">
+ 	</resultMap>
+ 	
+ 	<resultMap type="com.naver.toqur54.entities.SalaryRoll" id="SalaryRollMap"></resultMap>
+	
+	<!-- 업데이트 -->
+	<update id="updateRow" parameterType="hashMap">
+  		update salary set 
+  		empno=#{empno,jdbcType=VARCHAR},
+		dept=#{dept,jdbcType=VARCHAR},
+		name=#{name,jdbcType=VARCHAR},
+		input_date=#{input_date,jdbcType=VARCHAR},
+		birth_date=#{birth_date,jdbcType=VARCHAR},
+		parter=#{parter,jdbcType=INTEGER},
+		dependent20=#{dependent20,jdbcType=INTEGER},
+		dependent60=#{dependent60,jdbcType=INTEGER},
+		desabled=#{desabled,jdbcType=INTEGER},
+		womanpower=#{womanpower,jdbcType=INTEGER},
+		pay=#{pay,jdbcType=INTEGER},
+		extra=#{extra,jdbcType=INTEGER},
+		yn=#{yn,jdbcType=VARCHAR}
+		where empno=#{empno}
+  	</update>
+	
+	<select id="selectOne" parameterType="String" resultMap="SalaryMap">
+  		select * from salary where empno=#{empno}
+  	</select>
+	
+	<delete id="deleteRow" parameterType="String">
+		delete from salary where empno=#{empno}
+	</delete>
+	
+	<!--사원 검색 -->
+	<select id="selectRowCount" parameterType="String" resultType="int">
+		select count(*) from salary where
+		empno like CONCAT('%',#{find},'%') OR 
+  		name like CONCAT('%',#{find},'%') OR
+  		dept like CONCAT('%',#{find},'%')
+	</select>
+	
+	<select id="pageList" parameterType="hashMap" resultMap="SalaryMap">
+  		select * from salary where 
+  		empno like CONCAT('%',#{find},'%') OR 
+  		dept like CONCAT('%',#{find},'%') OR
+  		name like CONCAT('%',#{find},'%') 
+  	</select>
+	<!-- end 사원검색 -->
+	
+	
+	<!-- 급여계산 roll에 yn = y값넣기 -->
+	<select id="selectyn" resultMap="SalaryMap">
+  		select * from salary where yn='y' 
+  	</select>
+  	
+  	<delete id="salaryrollDelete" parameterType="hashMap">
+		delete from salaryroll where yyyy=#{yyyy} and mm=#{mm}
+	</delete>
+  	
+  	<insert id="insertSalaryrollRow" parameterType="hashMap">
+  		insert into salaryroll(yyyy,mm,empno,dept,name,
+  		partner,dependent20,dependent60,
+		disabled,womanpower,pay12,sumpay,incomededuction,
+		incomeamount,personaldeduction,annuityinsurance,specialdeduction,
+		standardamount,calculatedtax,incometaxdeduction,decidedtax,simpletax,finalpay
+		) values(
+		#{yyyy,jdbcType=VARCHAR},
+		#{mm,jdbcType=VARCHAR},
+		#{empno,jdbcType=VARCHAR},
+		#{dept,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{partner,jdbcType=INTEGER},
+		#{dependent20,jdbcType=INTEGER},
+		#{dependent60,jdbcType=INTEGER},
+		#{disabled,jdbcType=INTEGER},
+		#{womanpower,jdbcType=INTEGER},
+		#{pay12,jdbcType=INTEGER},
+		#{sumpay,jdbcType=INTEGER},
+		#{incomededuction,jdbcType=INTEGER},
+		#{incomeamount,jdbcType=INTEGER},
+		#{personaldeduction,jdbcType=INTEGER},
+		#{annuityinsurance,jdbcType=INTEGER},
+		#{specialdeduction,jdbcType=INTEGER},
+		#{standardamount,jdbcType=INTEGER},
+		#{calculatedtax,jdbcType=INTEGER},
+		#{incometaxdeduction,jdbcType=INTEGER},
+		#{decidedtax,jdbcType=INTEGER},
+		#{simpletax,jdbcType=INTEGER},
+		#{finalpay,jdbcType=INTEGER}
+		)
+  	</insert>
+	<!-- end 급여계산 roll에 yn = y값넣기 -->
+	
+	<select id="selectSalaryRoll" resultMap="SalaryRollMap">
+  		select * from salaryroll
+  	</select>
+	
+	<!-- 급여년월 미완-->
+	<select id="SalaryRollList" parameterType="hashMap" resultMap="SalaryRollMap">
+  		select * from salaryroll where 
+  		yyyy =#{yyyy} and mm =#{mm}
+  	</select>
+	<!-- end 급여년월 -->
+	
+	<!-- 부서별 rollup -->
+	<select id="SalaryRollUp" parameterType="hashMap" resultMap="SalaryRollMap">
+		select ifnull(yyyy,'총계') as yyyy, ifnull(mm,'총계') 
+      as mm, ifnull(dept,'소계') as dept, 
+      ifnull(empno,'부서소계') as empno, name, 
+      sum(pay12 / 12) as sumpay,sum(incomededuction/12) incomededuction,
+      sum(incomeamount/12) incomeamount,sum(personaldeduction/12) personaldeduction,
+      sum(annuityinsurance/12) annuityinsurance,sum(specialdeduction/12) specialdeduction,
+      sum(standardamount/12) standardamount,sum(calculatedtax/12) calculatedtax,
+      sum(incometaxdeduction/12) incometaxdeduction,sum(decidedtax/12) decidedtax,
+      sum(simpletax) simpletax
+      from salaryroll 
+      where yyyy=#{yyyy} and mm=#{mm}
+      group by yyyy, mm, dept, empno with rollup
+	</select>
+ </mapper>

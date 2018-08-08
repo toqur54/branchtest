@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.naver.toqur54.service.DistributionDao">
+	<select id="selectAll" resultMap="BalanceMap">
+  		select yyyy,vendcode,vendname,preyybalance,
+  		(deal01+deal02+deal03+deal04+deal05+deal06+deal07+deal08+deal09+deal10+deal11+deal12) as dealtot,
+  		(cash01+cash02+	cash03+cash04+cash05+cash06+cash07+cash08+cash09+cash10+cash11+cash12) as cashtot,
+  		(card01+card02+card03+card04+card05+card06+card07+	card08+	card09+card10+card11+card12) as cardtot,
+  		(check01+check02+check03+check04+check05+check06+check07+check08+check09+check10+check11+check12) as checktot,
+  		(etc01+etc02+etc03+etc04+etc05+etc06+etc07+etc08+etc09+etc10+etc11+etc12) as etctot,
+  		balance from balance where 
+  		vendcode like CONCAT('%',#{find},'%') OR 
+  		yyyy like CONCAT('%',#{find},'%') OR
+  		vendname like CONCAT('%',#{find},'%') 
+  	</select>
+  	
+  	<select id="selectAll2" resultMap="BalanceMap">
+  		select yyyy,vendcode,vendname,preyybalance,
+  		(deal01+deal02+deal03+deal04+deal05+deal06+deal07+deal08+deal09+deal10+deal11+deal12) as dealtot,
+  		(cash01+cash02+	cash03+cash04+cash05+cash06+cash07+cash08+cash09+cash10+cash11+cash12) as cashtot,
+  		(card01+card02+card03+card04+card05+card06+card07+	card08+	card09+card10+card11+card12) as cardtot,
+  		(check01+check02+check03+check04+check05+check06+check07+check08+check09+check10+check11+check12) as checktot,
+  		(etc01+etc02+etc03+etc04+etc05+etc06+etc07+etc08+etc09+etc10+etc11+etc12) as etctot,
+  		balance from balance
+  	</select>
+  	
+  	<resultMap type="com.naver.toqur54.entities.Balance" id="BalanceMap">
+ 	</resultMap>	
+ 	
+ 	<select id="selectOne" parameterType="hashMap" resultMap="BalanceMap">
+  		select *,(deal01+deal02+deal03+deal04+deal05+deal06+deal07+deal08+deal09+deal10+deal11+deal12) as dealtot,
+  		(cash01+cash02+	cash03+cash04+cash05+cash06+cash07+cash08+cash09+cash10+cash11+cash12) as cashtot,
+  		(card01+card02+card03+card04+card05+card06+card07+	card08+	card09+card10+card11+card12) as cardtot,
+  		(check01+check02+check03+check04+check05+check06+check07+check08+check09+check10+check11+check12) as checktot,
+  		(etc01+etc02+etc03+etc04+etc05+etc06+etc07+etc08+etc09+etc10+etc11+etc12) as etctot
+  		 from balance where vendcode=#{vendcode} and yyyy=#{yyyy}
+  	</select>
+  	
+  	<update id="updateRow" parameterType="hashMap">
+  		update balance set 
+  		yyyy=#{yyyy,jdbcType=VARCHAR},
+  		vendcode=#{vendcode,jdbcType=VARCHAR},
+		vendname=#{vendname,jdbcType=VARCHAR},
+		preyybalance=#{preyybalance,jdbcType=INTEGER},
+		prebalance01=#{prebalance01,jdbcType=INTEGER},prebalance02=#{prebalance02,jdbcType=INTEGER},
+		prebalance03=#{prebalance03,jdbcType=INTEGER},prebalance04=#{prebalance04,jdbcType=INTEGER},
+		prebalance05=#{prebalance05,jdbcType=INTEGER},prebalance06=#{prebalance06,jdbcType=INTEGER},
+		prebalance07=#{prebalance07,jdbcType=INTEGER},prebalance08=#{prebalance08,jdbcType=INTEGER},
+		prebalance09=#{prebalance09,jdbcType=INTEGER},prebalance10=#{prebalance10,jdbcType=INTEGER},
+		prebalance11=#{prebalance11,jdbcType=INTEGER},prebalance12=#{prebalance12,jdbcType=INTEGER},
+		deal01=#{deal01,jdbcType=INTEGER},deal02=#{deal02,jdbcType=INTEGER},
+		deal03=#{deal03,jdbcType=INTEGER},deal04=#{deal04,jdbcType=INTEGER},
+		deal05=#{deal05,jdbcType=INTEGER},deal06=#{deal06,jdbcType=INTEGER},
+		deal07=#{deal07,jdbcType=INTEGER},deal08=#{deal08,jdbcType=INTEGER},
+		deal09=#{deal09,jdbcType=INTEGER},deal10=#{deal10,jdbcType=INTEGER},
+		deal11=#{deal11,jdbcType=INTEGER},deal12=#{deal12,jdbcType=INTEGER},
+		cash01=#{cash01,jdbcType=INTEGER},cash02=#{cash02,jdbcType=INTEGER},
+		cash03=#{cash03,jdbcType=INTEGER},cash04=#{cash04,jdbcType=INTEGER},
+		cash05=#{cash05,jdbcType=INTEGER},cash06=#{cash06,jdbcType=INTEGER},
+		cash07=#{cash07,jdbcType=INTEGER},cash08=#{cash08,jdbcType=INTEGER},
+		cash09=#{cash09,jdbcType=INTEGER},cash10=#{cash10,jdbcType=INTEGER},
+		cash11=#{cash11,jdbcType=INTEGER},cash12=#{cash12,jdbcType=INTEGER},
+		card01=#{card01,jdbcType=INTEGER},card02=#{card02,jdbcType=INTEGER},
+		card03=#{card03,jdbcType=INTEGER},card04=#{card04,jdbcType=INTEGER},
+		card05=#{card05,jdbcType=INTEGER},card06=#{card06,jdbcType=INTEGER},
+		card07=#{card07,jdbcType=INTEGER},card08=#{card08,jdbcType=INTEGER},
+		card09=#{card09,jdbcType=INTEGER},card10=#{card10,jdbcType=INTEGER},
+		card11=#{card11,jdbcType=INTEGER},card12=#{card12,jdbcType=INTEGER},
+		check01=#{check01,jdbcType=INTEGER},check02=#{check02,jdbcType=INTEGER},
+		check03=#{check03,jdbcType=INTEGER},check04=#{check04,jdbcType=INTEGER},
+		check05=#{check05,jdbcType=INTEGER},check06=#{check06,jdbcType=INTEGER},
+		check07=#{check07,jdbcType=INTEGER},check08=#{check08,jdbcType=INTEGER},
+		check09=#{check09,jdbcType=INTEGER},check10=#{check10,jdbcType=INTEGER},
+		check11=#{check11,jdbcType=INTEGER},check12=#{check12,jdbcType=INTEGER},
+		etc01=#{etc01,jdbcType=INTEGER},etc02=#{etc02,jdbcType=INTEGER},
+		etc03=#{etc03,jdbcType=INTEGER},etc04=#{etc04,jdbcType=INTEGER},
+		etc05=#{etc05,jdbcType=INTEGER},etc06=#{etc06,jdbcType=INTEGER},
+		etc07=#{etc07,jdbcType=INTEGER},etc08=#{etc08,jdbcType=INTEGER},
+		etc09=#{etc09,jdbcType=INTEGER},etc10=#{etc10,jdbcType=INTEGER},
+		etc11=#{etc11,jdbcType=INTEGER},etc12=#{etc12,jdbcType=INTEGER},
+		balance01=#{balance01,jdbcType=INTEGER},balance02=#{balance02,jdbcType=INTEGER},
+		balance03=#{balance03,jdbcType=INTEGER},balance04=#{balance04,jdbcType=INTEGER},
+		balance05=#{balance05,jdbcType=INTEGER},balance06=#{balance06,jdbcType=INTEGER},
+		balance07=#{balance07,jdbcType=INTEGER},balance08=#{balance08,jdbcType=INTEGER},
+		balance09=#{balance09,jdbcType=INTEGER},balance10=#{balance10,jdbcType=INTEGER},
+		balance11=#{balance11,jdbcType=INTEGER},balance12=#{balance12,jdbcType=INTEGER},
+		paytot=#{paytot,jdbcType=INTEGER},
+		dealtot=#{dealtot,jdbcType=INTEGER},
+		balance=#{balance,jdbcType=INTEGER}
+		where vendcode=#{vendcode}
+  	</update>
+  	
+  	<delete id="deleteRow" parameterType="String">
+		delete from balance where vendcode=#{vendcode}
+	</delete>
+	
+	<!-- vender all, product all, buy all -->
+	<select id="selectVender" resultMap="VenderMap">
+		select * from vender
+  	</select>
+  	
+  	<resultMap type="com.naver.toqur54.entities.Vender" id="VenderMap">
+ 	</resultMap>
+ 	
+	<select id="selectProduct" resultMap="ProductMap">
+		select * from product
+  	</select>
+  	
+  	<resultMap type="com.naver.toqur54.entities.Product" id="ProductMap">
+ 	</resultMap>
+ 	
+  	<resultMap type="com.naver.toqur54.entities.Buy" id="BuyMap">
+ 	</resultMap>
+ 	<!-- end -->
+ 	
+	<insert id="buyBalanceAdd" parameterType="hashMap">
+		insert into balance(
+		yyyy,vendcode,vendname,${dealcolumn},${balancecolumn},balance
+		)values(
+		#{yyyy,jdbcType=VARCHAR},
+		#{vendcode,jdbcType=VARCHAR},
+		#{vendname,jdbcType=VARCHAR},
+		#{price} * #{qty},#{price} * #{qty},#{price} * #{qty}
+		) ON DUPLICATE KEY UPDATE
+		${dealcolumn} = ${dealcolumn} + #{price} * #{qty},
+		${balancecolumn} = ${balancecolumn} + #{price} * #{qty},
+		balance = balance + #{price} * #{qty}
+	</insert>
+	
+	<update id="buyBalanceSub" parameterType="hashMap">
+		update balance set 
+		${dealcolumn} = ${dealcolumn} - (#{beforeprice} * #{beforeqty}),
+		${balancecolumn} = ${balancecolumn} - (#{beforeprice} * #{beforeqty}),
+		balance = balance - (#{beforeprice} * #{beforeqty})
+		where yyyy=#{yyyy} and vendcode=#{vendcode}
+	</update>
+	
+<!-- 	<insert id="payBalanceAdd" parameterType="hashMap"> -->
+<!-- 		insert into balance( -->
+<!-- 		yyyy,vendcode,${paycolumn},${balancecolumn},balance -->
+<!-- 		)values( -->
+<!-- 		#{yyyy,jdbcType=VARCHAR}, -->
+<!-- 		#{vendcode,jdbcType=VARCHAR}, -->
+<!-- 		#{amount},${dealcolumn} - ${paycolumn},${balancecolumn} -->
+<!-- 		) ON DUPLICATE KEY UPDATE -->
+<!-- 		${paycolumn} = ${paycolumn} + #{amount}, -->
+<!-- 		${balancecolumn} = ${balancecolumn} + (${dealcolumn} -#{amount}), -->
+<!-- 		balance = balance + (${dealcolumn} -#{amount}) -->
+<!-- 	</insert> -->
+	
+<!-- 	<update id="payBalanceSub" parameterType="hashMap"> -->
+<!-- 		update balance set  -->
+<!-- 		${paycolumn} = ${paycolumn} - #{beforeamount}, -->
+<!-- 		${balancecolumn} = ${balancecolumn} - (${dealcolumn} - #{beforeamount}), -->
+<!-- 		balance = balance - (${dealcolumn} - #{beforeamount}) -->
+<!-- 		where yyyy=#{yyyy} and vendcode=#{vendcode} -->
+<!-- 	</update> -->
+	
+	
+	<!-- 교수님방법 -->
+	<update id="payBalanceAdd" parameterType="hashMap">
+		update balance set
+		${paywaycolumn} = ${paywaycolumn} + #{amount},
+		${balancecolumn} = ${balancecolumn} - #{amount},
+		balance = balance - #{amount}
+		where yyyy=#{yyyy} and vendcode=#{vendcode}
+	</update>
+	
+	<update id="payBalanceSub" parameterType="hashMap">
+		update balance set
+		${beforepaywaycolumn} = ${beforepaywaycolumn} - #{beforeamount},
+		${balancecolumn} = ${balancecolumn} + #{beforeamount},
+		balance = balance + #{beforeamount}
+		where yyyy=#{yyyy} and vendcode=#{vendcode}
+	</update>
+	
+	
+	<insert id="payBalanceAddCash" parameterType="hashMap">
+		insert into balance(
+		yyyy,vendcode,${cashcolumn},${balancecolumn},balance
+		)values(
+		#{yyyy,jdbcType=VARCHAR},
+		#{vendcode,jdbcType=VARCHAR},
+		#{amount},${dealcolumn} - ${cashcolumn},${balancecolumn}
+		) ON DUPLICATE KEY UPDATE
+		${cashcolumn} = ${cashcolumn} + #{amount},
+		${balancecolumn} = ${balancecolumn} + (${dealcolumn} -#{amount}),
+		balance = balance + (${dealcolumn} -#{amount})
+	</insert>
+	
+	<insert id="payBalanceAddCard" parameterType="hashMap">
+		insert into balance(
+		yyyy,vendcode,${cardcolumn},${balancecolumn},balance
+		)values(
+		#{yyyy,jdbcType=VARCHAR},
+		#{vendcode,jdbcType=VARCHAR},
+		#{amount},${dealcolumn} - ${cardcolumn},${balancecolumn}
+		) ON DUPLICATE KEY UPDATE
+		${cardcolumn} = ${cardcolumn} + #{amount},
+		${balancecolumn} = ${balancecolumn} + (${dealcolumn} -#{amount}),
+		balance = balance + (${dealcolumn} -#{amount})
+	</insert>
+	
+	<insert id="payBalanceAddCheck" parameterType="hashMap">
+		insert into balance(
+		yyyy,vendcode,${checkcolumn},${balancecolumn},balance
+		)values(
+		#{yyyy,jdbcType=VARCHAR},
+		#{vendcode,jdbcType=VARCHAR},
+		#{amount},${dealcolumn} - ${checkcolumn},${balancecolumn}
+		) ON DUPLICATE KEY UPDATE
+		${checkcolumn} = ${checkcolumn} + #{amount},
+		${balancecolumn} = ${balancecolumn} + (${dealcolumn} -#{amount}),
+		balance = balance + (${dealcolumn} -#{amount})
+	</insert>
+	
+	<insert id="payBalanceAddEtc" parameterType="hashMap">
+		insert into balance(
+		yyyy,vendcode,${etccolumn},${balancecolumn},balance
+		)values(
+		#{yyyy,jdbcType=VARCHAR},
+		#{vendcode,jdbcType=VARCHAR},
+		#{amount},${dealcolumn} - ${etccolumn},${balancecolumn}
+		) ON DUPLICATE KEY UPDATE
+		${etccolumn} = ${etccolumn} + #{amount},
+		${balancecolumn} = ${balancecolumn} + (${dealcolumn} -#{amount}),
+		balance = balance + (${dealcolumn} -#{amount})
+	</insert>
+	
+	<update id="payBalanceSubCash" parameterType="hashMap">
+		update balance set 
+		${cashcolumn} = ${cashcolumn} - #{beforeamount},
+		${balancecolumn} = ${balancecolumn} - (${dealcolumn} - #{beforeamount}),
+		balance = balance - (${dealcolumn} - #{beforeamount})
+		where yyyy=#{yyyy} and vendcode=#{vendcode}
+	</update>
+	
+	<update id="payBalanceSubCard" parameterType="hashMap">
+		update balance set 
+		${cardcolumn} = ${cardcolumn} - #{beforeamount},
+		${balancecolumn} = ${balancecolumn} - (${dealcolumn} - #{beforeamount}),
+		balance = balance - (${dealcolumn} - #{beforeamount})
+		where yyyy=#{yyyy} and vendcode=#{vendcode}
+	</update>
+	
+	<update id="payBalanceSubCheck" parameterType="hashMap">
+		update balance set 
+		${checkcolumn} = ${checkcolumn} - #{beforeamount},
+		${balancecolumn} = ${balancecolumn} - (${dealcolumn} - #{beforeamount}),
+		balance = balance - (${dealcolumn} - #{beforeamount})
+		where yyyy=#{yyyy} and vendcode=#{vendcode}
+	</update>
+	
+	<update id="payBalanceSubEtc" parameterType="hashMap">
+		update balance set 
+		${etccolumn} = ${etccolumn} - #{beforeamount},
+		${balancecolumn} = ${balancecolumn} - (${dealcolumn} - #{beforeamount}),
+		balance = balance - (${dealcolumn} - #{beforeamount})
+		where yyyy=#{yyyy} and vendcode=#{vendcode}
+	</update>
+  	
+  	<!-- 잔액 마감 년마감 -->
+  	<insert id="yyyyfinalBalance" parameterType="HashMap">
+  		insert into balance(
+  		yyyy,vendcode,vendname,preyybalance,balance
+  		)values
+  		<foreach collection="list" item="balances" separator=" , ">
+  			(convert(#{balances.yyyy},unsigned)+1,#{balances.vendcode},
+  			#{balances.vendname},#{balances.balance},#{balances.balance})
+  		</foreach>
+  		
+  	</insert>
+  	
+  	<!-- 월마감 -->
+  	<update id="mmfinalBalance" parameterType="HashMap">
+  		update balance set ${precolumnname}=balance, ${curcolumnname}=balance
+  		where yyyy=#{finalyyyy}
+  	</update>
+  	
+  	
+  	
+  	
+ </mapper>
